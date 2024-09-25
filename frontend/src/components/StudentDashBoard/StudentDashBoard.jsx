@@ -1,41 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const StudentDashBoard = () => {
-  const [login , setLogin] = useState(!!localStorage.getItem('token'));
-  const [userData , setUserData] = useState({});
+const StudentDashBoard = ({ setLogin }) => {
+  const [userData , setUserData] = useState({})
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     const token = localStorage.getItem('token');
-    if(token) {
+    if (token) {
       setLogin(true);
-      fetch('http://localhost:3000/api/v1/student/detail' , {
-        method : 'GET',
-        headers : {
-          'Content-Type' : "application/json",
-          authorization : token
+      fetch('http://localhost:3000/api/v1/student/detail', {
+        method: 'GET',
+        headers: {
+          'Content-Type': "application/json",
+          authorization: token
         }
-      }).then(async(data)=>{
+      }).then(async (data) => {
         const response = await data.json();
         setUserData(response)
       })
     }
-    
-  },[])
-  const logOutHandler = ()=>{
+
+  }, [])
+  const logOutHandler = () => {
     localStorage.removeItem('token');
     setLogin(false);
+    navigate('/')
   }
   return (
     <div>
-      {
-        login ? <div>
-          <div>{userData.student_name}</div>
-          <div>{userData.username}</div>
-          <button onClick={logOutHandler}>Logout</button>
-        </div> : (navigate('/'))
-      }
+      <div>{userData.student_name}</div>
+      <div>{userData.username}</div>
+      <button onClick={logOutHandler}>Logout</button>
     </div>
   )
 }

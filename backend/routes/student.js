@@ -11,9 +11,9 @@ const { default: mongoose } = require('mongoose');
 const router = express.Router()
 
 router.post('/signup' , async(req,res) => {
-    const { first_name , last_name , username , password ,age } = req.body.newStudent
+    const { first_name , last_name , username , password ,age } = req.body;
     try {
-        const { success } = signup.safeParse(req.body.newStudent)
+        const { success } = signup.safeParse(req.body)
         if(!success){
             return res.status(400).json({
                 message : "Invalid Input type"
@@ -48,9 +48,9 @@ router.post('/signup' , async(req,res) => {
 })
 
 router.post('/signin' , async(req,res)=>{
-    const {username , password} = req.body.credentials;
+    const {username , password} = req.body;
     try {
-        const {success} = signin.safeParse(req.body.credentials);
+        const {success} = signin.safeParse(req.body);
         if(!success) {
             return res.status(400).json({
                 message : "Invalid Input type"

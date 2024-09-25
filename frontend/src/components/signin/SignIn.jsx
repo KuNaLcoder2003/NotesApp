@@ -1,35 +1,40 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const SignIn = ({url , setLogin , setId}) => {
-  const [fromData , setFormData] = useState({
-    username : '',
-    password : ''
+const SignIn = ({ url, setLogin, setId }) => {
+  const [fromData, setFormData] = useState({
+    username: '',
+    password: ''
   })
-  const submitHandler = (e)=>{
+  const navigate = useNavigate();
+  const submitHandler = (e) => {
     e.preventDefault()
 
     try {
-      fetch(url , {
-        method : 'POST',
-        body : JSON.stringify({
-          credentials : {
-            username : fromData.username,
-            password : fromData.password
-          }
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+
+          username: fromData.username,
+          password: fromData.password
+
         }),
-        headers : {
-          'Content-Type' : 'application/json'
+        headers: {
+          'Content-Type': 'application/json'
         }
-      }).then(async(data)=>{
+      }).then(async (data) => {
         const response = await data.json();
         console.log(response);
-        localStorage.setItem('token' , `Bearer ${response.token}`)
+        if (response.token) {
+          localStorage.setItem('token', `Bearer ${response.token}`)
+          setLogin(true);
+          // setId(response.id)
+          // navigate(`/student/${response.id}`)
+        }
         setFormData({
-          username : '',
-          password : ''
+          username: '',
+          password: ''
         })
-        setLogin(true);
-        setId(response.id)
       })
     } catch (error) {
       console.log(error)
@@ -42,17 +47,17 @@ const SignIn = ({url , setLogin , setId}) => {
 
         <div>
           <p>Username : </p>
-          <input value={fromData.username} type="text" placeholder='Enter your username...' onChange={(e)=>setFormData({...fromData , username : e.target.value})} />
+          <input value={fromData.username} type="text" placeholder='Enter your username...' onChange={(e) => setFormData({ ...fromData, username: e.target.value })} />
         </div>
 
         <div>
           <p>Password : </p>
-          <input value={fromData.password} type='password' placeholder='Enter your password...' onChange={(e)=>setFormData({...fromData , password : e.target.value})} />
+          <input value={fromData.password} type='password' placeholder='Enter your password...' onChange={(e) => setFormData({ ...fromData, password: e.target.value })} />
         </div>
 
         <button type='submit'>SignIn</button>
       </form>
-      
+
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const SignUp = ({ url , setLogin , setId }) => {
+const SignUp = ({ url, setLogin, setId }) => {
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -9,6 +10,8 @@ const SignUp = ({ url , setLogin , setId }) => {
     password: "",
     age: "",
   })
+  const navigate = useNavigate()
+
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -16,13 +19,13 @@ const SignUp = ({ url , setLogin , setId }) => {
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({
-          newStudent: {
-            first_name: formData.first_name,
-            last_name: formData.last_name,
-            username: formData.username,
-            password: formData.password,
-            age: parseInt(formData.age)
-          }
+
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          username: formData.username,
+          password: formData.password,
+          age: parseInt(formData.age)
+
         }),
         headers: {
           'Content-Type': 'application/json'
@@ -30,6 +33,12 @@ const SignUp = ({ url , setLogin , setId }) => {
       }).then(async (data) => {
         const response = await data.json();
         // console.log(response);
+        if (response.token) {
+          localStorage.setItem('token', `Bearer ${response.token}`)
+          setLogin(true);
+          setId(response.id)
+          navigate(`/student/${response.id}`)
+        }
         setFormData({
           first_name: "",
           last_name: "",
@@ -37,9 +46,7 @@ const SignUp = ({ url , setLogin , setId }) => {
           password: "",
           age: "",
         })
-        localStorage.setItem('token' , `Bearer ${response.token}`)
-        setLogin(true);
-        setId(response.id)
+
       })
     } catch (error) {
 
