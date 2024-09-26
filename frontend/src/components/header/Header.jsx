@@ -1,7 +1,9 @@
 import React from 'react'
 import "./header.css"
+import { useNavigate } from 'react-router-dom'
 
 const Header = ({ name, letter, type , setLogin }) => {
+    const navigate = useNavigate();
     const logoutHandler = ()=>{
         localStorage.removeItem('token');
         setLogin(false)
@@ -16,7 +18,7 @@ const Header = ({ name, letter, type , setLogin }) => {
             {
                 type === "Student Profile" ?
                     <div className='student-access'>
-                        <div>Batches</div>
+                        <div onClick={()=>navigate('/student/batches')}>Batches</div>
                         <div>Teachers</div>
                     </div> :
                     <div>

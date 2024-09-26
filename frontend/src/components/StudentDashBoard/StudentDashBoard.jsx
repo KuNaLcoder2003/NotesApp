@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import Header from '../header/Header';
+import Batches from '../batches/Batches';
 
 const StudentDashBoard = ({ setLogin }) => {
-  const [userData , setUserData] = useState({})
+  const [userData , setUserData] = useState({
+    student_name : '',
+    username : ""
+  })
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,21 +22,23 @@ const StudentDashBoard = ({ setLogin }) => {
         }
       }).then(async (data) => {
         const response = await data.json();
-        setUserData(response)
+        setUserData({
+          student_name : response.student_name,
+          username : response.username
+        })
       })
     }
 
   }, [])
-  const logOutHandler = () => {
-    localStorage.removeItem('token');
-    setLogin(false);
-    navigate('/')
-  }
+  // const logOutHandler = () => {
+  //   localStorage.removeItem('token');
+  //   setLogin(false);
+  //   navigate('/')
+  // }
   return (
-    <div>
-      <div>{userData.student_name}</div>
-      <div>{userData.username}</div>
-      <button onClick={logOutHandler}>Logout</button>
+    <div className='studentDashboard'>
+      <Header type="Student Profile" name={userData.student_name} letter = {userData.student_name.at(0)} setLogin = {setLogin} />
+      <Batches url="http://localhost:3000/api/v1/student/purchased" type="student dashboard" />
     </div>
   )
 }
