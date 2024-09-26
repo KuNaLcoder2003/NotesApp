@@ -78,13 +78,12 @@ router.post('/signin' , async(req,res)=>{
 router.get('/batches' , authMiddleWare , async(req,res)=> {
     // const userId = req.userId
     try {
-        const batches = await Batch.find({}).populate('teacher').populate('students');
+        const batches = await Batch.find({}).populate('teacher')
         if(batches.length == 0) {
             return res.json({
                 message : "Currently no batches"
             })
         }
-
         res.status(200).json({
             batches : batches.map( batch => ({
                 batch_name : batch.batch_name,
@@ -113,6 +112,25 @@ router.post('/purchase/:batchId' , authMiddleWare , async(req,res)=> {
     } catch (error) {
         res.status(500).json({
             message : "something went wrong"
+        })
+    }
+})
+
+router.get('/purchased' ,  authMiddleWare , async(req,res)=> {
+    const studentId = req.userId;
+    try {
+        const student= await Student.findOne({_id : studentId}).populate('batches');
+        if(student.length == 0){
+            return res.json({
+                message : "No purchased Batches"
+            })
+        }
+        res.status(200).json({
+            batches : student.batches
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : "Error fetching Courses"
         })
     }
 })
