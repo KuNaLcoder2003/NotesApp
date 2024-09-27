@@ -86,6 +86,7 @@ router.get('/batches' , authMiddleWare , async(req,res)=> {
         }
         res.status(200).json({
             batches : batches.map( batch => ({
+                batch_id : batch._id,
                 batch_name : batch.batch_name,
                 teacher_name : batch.teacher.first_name,
                 teacher_username : batch.teacher.username
