@@ -98,9 +98,16 @@ const Notes_Schema = new mongoose.Schema({
         ref : 'batches'
     },
     files : [{
-        type : String
+        notes_url : {
+            type : String,
+            required : true
+        },
+        notes_id : {
+            type : String,
+            required : true,
+        }
     }]
-})
+} , {timestamps : true})
 
 
 const Student = mongoose.model('students' ,Student_Schema)
