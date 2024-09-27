@@ -82,7 +82,43 @@ router.post('/addNotes/:batchId', authMiddleWare, upload.single('file'), async (
             message : "Uploaded noes successfully"
         })
     } catch (error) {
-
+        res.status(500).json({
+            message : "something went wrong"
+        })
     }
 })
+
+router.get('/student/:batchId' , authMiddleWare , async(req,res)=> {
+    const studentId = req.userId;
+    const teacherId = req.body.teacherId;
+    const batchId = req.params.batchId;
+    try {
+        const notes = await Notes.find({batch : batchId , teacherId : teacherId })
+        if(!notes) {
+            return res.json({
+                message : "Cannot get courses"
+            })
+        }
+        let notes_array = [];
+        notes.map( note => {
+            
+            note.files.map( n => {
+                notes_array.push(n)
+            })
+        })
+
+        res.status(200).json({
+            notes : notes_array
+        })
+    
+
+    } catch (error) {
+        res.status(500).json({
+            message : "Something went wrong"
+        })
+    }
+})
+
+
+
 module.exports = router
