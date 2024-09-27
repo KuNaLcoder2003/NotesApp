@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import "./batches.css"
+import { useNavigate } from 'react-router-dom';
 
 const Batches = ({ type, url }) => {
+    const navigate = useNavigate();
 
     const [batches, setBatches] = useState([]);
     useEffect(() => {
@@ -47,7 +49,7 @@ const Batches = ({ type, url }) => {
                                 {
                                     batches.map(batch => {
                                         return (
-                                            <div className='batch'>
+                                            <div className='batch' key={batch.batch_id} onClick={()=>{navigate(`/student/purchase/${batch.batch_id}`)}}>
                                                 <p>{batch.batch_name}</p>
                                                 <p>{batch.teacher_name}</p>
                                                 <p>{batch.teacher_username}</p>
