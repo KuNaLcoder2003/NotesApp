@@ -7,6 +7,8 @@ const jwt_key = key.jwt_key
 const {signup , signin} = require('../types')
 const authMiddleWare = require('../middlewares/authMiddleware')
 
+
+
 router.post('/signup' , async(req,res)=> {
     const { first_name , last_name , username , password , age  } = req.body;
     try {
