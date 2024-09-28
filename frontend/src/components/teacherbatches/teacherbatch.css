@@ -1,0 +1,19 @@
+.batches{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    margin: 20px auto;
+
+    .batch{
+        width: 40%;
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 1rem;
+        cursor: pointer;
+    }
+}
