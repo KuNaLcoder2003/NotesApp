@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import "./signin.css"
 
-const SignIn = ({ url, setLogin, setId }) => {
+const SignIn = ({ url, setLogin, type }) => {
   const [fromData, setFormData] = useState({
     username: '',
     password: ''
@@ -27,9 +28,10 @@ const SignIn = ({ url, setLogin, setId }) => {
         console.log(response);
         if (response.token) {
           localStorage.setItem('token', `Bearer ${response.token}`)
+          type === "student" ? localStorage.setItem('profile' , "student") : localStorage.setItem('profile' , "teacher") 
           setLogin(true);
           // setId(response.id)
-          // navigate(`/student/${response.id}`)
+          // type === "student" ? navigate(`/student/${response.id}`) : navigate('/teacher')
         }
         setFormData({
           username: '',
@@ -42,7 +44,7 @@ const SignIn = ({ url, setLogin, setId }) => {
   }
   return (
     <div className='sign-in-wrapper'>
-
+      <h1 style={{textAlign : "center"}}>Signin</h1>
       <form onSubmit={submitHandler}>
 
         <div>
