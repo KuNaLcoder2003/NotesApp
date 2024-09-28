@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-const SignUp = ({ url, setLogin, setId }) => {
+import "./signup.css"
+const SignUp = ({ url, setLogin, setId , type }) => {
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -35,9 +35,10 @@ const SignUp = ({ url, setLogin, setId }) => {
         // console.log(response);
         if (response.token) {
           localStorage.setItem('token', `Bearer ${response.token}`)
-          setLogin(true);
+          type === "student" ? localStorage.setItem('profile' , 'student') : localStorage.setItem('profile' , 'teacher')
+          // setLogin(true);
           setId(response.id)
-          navigate(`/student/${response.id}`)
+          // navigate(`/student/${response.id}`)
         }
         setFormData({
           first_name: "",
@@ -55,6 +56,7 @@ const SignUp = ({ url, setLogin, setId }) => {
 
   return (
     <div className='signup-wrapper'>
+      <h1 style={{textAlign : "center"}}>Signup</h1>
       <form onSubmit={submitHandler}>
 
 
