@@ -4,7 +4,6 @@ const { Student, Teacher, Batch, Notes } = require('../db')
 const jwt = require('jsonwebtoken')
 const key = require('../secret');
 const jwt_key = key.jwt_key
-const { signup, signin } = require('../types')
 const authMiddleWare = require('../middlewares/authMiddleware')
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
 const cloudinary = require('cloudinary').v2
@@ -91,30 +90,43 @@ router.post('/addNotes/:batchId', authMiddleWare, upload.single('file'), async (
 router.get('/student/:batchId' , authMiddleWare , async(req,res)=> {
     const studentId = req.userId;
     const teacherId = req.body.teacherId;
+    if(!teacherId) {
+        return res.status(400).json({
+            message : "Bad request"
+        })
+    }
     const batchId = req.params.batchId;
     try {
-        const notes = await Notes.find({batch : batchId , teacherId : teacherId })
-        if(!notes) {
-            return res.json({
-                message : "Cannot get courses"
+        
+        const access = await Batch.findOne({_id : batchId , students : studentId})
+        if(!access) {
+            return res.status(403).json({
+                message : "You do not have access to this batch"
             })
         }
-        let notes_array = [];
-        notes.map( note => {
-            
-            note.files.map( n => {
-                notes_array.push(n)
+        const notes = await Notes.find({batch : batchId , teacherId : teacherId }).populate('files')
+        if(notes.length === 0){
+            return res.status(404).json({
+                message : "No notes found"
             })
-        })
+        }
 
+        // let notes_array = [];
+        // console.log(notes);
+        // notes.map( note => {
+        //     console.log('hello')
+        //     note.files.map( file => {
+        //         console.log('inner heelo')
+        //         notes_array.push(file)
+        //     } )
+        // })
+        const notes_array = notes.reduce((acc, note) => acc.concat(note.files), []);
         res.status(200).json({
             notes : notes_array
         })
-    
-
     } catch (error) {
         res.status(500).json({
-            message : "Something went wrong"
+            message : "Error fetching notes"
         })
     }
 })
