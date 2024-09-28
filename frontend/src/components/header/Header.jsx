@@ -7,6 +7,7 @@ const Header = ({ name, letter, type , setLogin }) => {
     const logoutHandler = ()=>{
         localStorage.removeItem('token');
         setLogin(false)
+        localStorage.removeItem('profile')
     }
     return (
         <div className='header-wrapper'>
@@ -21,8 +22,8 @@ const Header = ({ name, letter, type , setLogin }) => {
                         <div onClick={()=>navigate('/student/batches')}>Batches</div>
                         <div>Teachers</div>
                     </div> :
-                    <div>
-                        <div>Add A batch</div>
+                    <div className='student-access'>
+                        <div>Add a batch</div>
                         <div>Students</div>
                     </div>
             }
