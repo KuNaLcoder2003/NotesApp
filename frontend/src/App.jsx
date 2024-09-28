@@ -7,11 +7,13 @@ import Teacher from './profiles/Teacher';
 import StudentDashBoard from './components/StudentDashBoard/StudentDashBoard';
 import BatchesPage from './pages/BatchesPage';
 import BatchPurchase from './pages/BatchPurchase';
+import TeacherDashboard from './components/teacherDashboard/TeacherDashboard';
 
 function App() {
   const [student , setStudent] = useState(false);
   const [teacher , setTeacher] = useState(false);
   const [login, setLogin] = useState(!!localStorage.getItem('token'));
+  const [profile , setProfile] = useState(localStorage.getItem('profile'))
   // const navigate = useNavigate();
   useEffect(() => {
     // Check if a token exists in localStorage on initial load
@@ -27,10 +29,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element = {<DashBoard setStudent={setStudent} setTeacher = {setTeacher} />} />
-          <Route path='/student' element={ login ? <StudentDashBoard setLogin = {setLogin} />  : <Student setLogin = {setLogin} /> } />
-          <Route path='/teacher' element={<Teacher/>} />
-          <Route path='/student/batches' element={login ? <BatchesPage/> :<Student setLogin = {setLogin} />}/>
-          <Route path='/student/purchase/:batchId' element={login ? <BatchPurchase setLogin={setLogin} /> :<Student setLogin = {setLogin} />}/>
+          <Route path='/student' element={ login && profile === "student" ? <StudentDashBoard setLogin = {setLogin} />  : <Student setLogin = {setLogin} setProfile={setProfile} /> } />
+          <Route path='/teacher' element={ login && profile === "teacher" ? <TeacherDashboard setLogin = {setLogin} />  : <Teacher setLogin={setLogin} />} />
+          <Route path='/student/batches' element={login && profile === "student" ? <BatchesPage/> :<Student setLogin = {setLogin} setProfile={setProfile} />}/>
+          <Route path='/student/purchase/:batchId' element={login && profile === "student" ? <BatchPurchase setLogin={setLogin} /> :<Student setLogin = {setLogin} setProfile={setProfile} />}/>
         </Routes>
       </BrowserRouter>
 
