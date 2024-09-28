@@ -127,5 +127,51 @@ router.get('/students/:batchId' , authMiddleWare , async(req,res)=> {
     }
 })
 
+router.get('/batches' , authMiddleWare , async(req,res) => {
+    const teacherId = req.userId;
+    try {
+        const batches = await Batch.find({teacher : teacherId}).populate('teacher').populate('students');
+        if(batches.length == 0){
+            return res.status(200).json({
+                message : "You have not posted any batch"
+            })
+        }
+        // console.log(batches);
+        let batch = batches.map( batch => (
+            {
+                id : batch._id,
+                batch_name  : batch.batch_name,
+                batch_desc : batch.batch_desc || "",
+                students : batch.students
+            }
+        ))
+        res.status(200).json({
+            batches : batch
+        })
+    } catch (error) {
+        
+    }
+} )
+
+router.get('/details' , authMiddleWare , async(req,res) => {
+    const teacherId = req.userId;
+    try {
+        const teacher = await Teacher.findOne({_id  : teacherId}).populate('batches')
+        if(!teacher) {
+            return res.status(401).json({
+                message : "teacher not found"
+            })
+        }
+        res.status(200).json ({
+            valid : true,
+            teacher : teacher
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : "Something went wrong"
+        })
+    }
+})
+
 
 module.exports = router
