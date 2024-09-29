@@ -18,6 +18,7 @@ const Batches = ({ type, url }) => {
             const response = await data.json()
 
             if (response.batches) {
+                console.log(response.batches)
                 setBatches(response.batches)
             }
             else {
@@ -25,6 +26,7 @@ const Batches = ({ type, url }) => {
             }
         })
     }, [])
+
     return (
         <div className='batches-wrapper'>
             <h1 style={{ textAlign: "center", marginBottom: "20px" }}>{
@@ -36,8 +38,9 @@ const Batches = ({ type, url }) => {
                     type === "student dashboard" ? <>
                         {
                             batches.length === 0 ? <p>No batches purchsed</p> : batches.map(batch => {
+                                console.log(batch._id);
                                 return (
-                                    <div className='batch'>
+                                    <div key={batch._id} className='batch' onClick={()=>{navigate(`/student/currentBatch/${batch._id}/${batch.teacher}`)}}>
                                         <p>{batch.batch_name}</p>
                                     </div>
                                 )
