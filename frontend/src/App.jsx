@@ -8,6 +8,8 @@ import StudentDashBoard from './components/StudentDashBoard/StudentDashBoard';
 import BatchesPage from './pages/BatchesPage';
 import BatchPurchase from './pages/BatchPurchase';
 import TeacherDashboard from './components/teacherDashboard/TeacherDashboard';
+import CurrentBatch from './components/currentbatch/CurrentBatch';
+import StudentCurrentBatch from './components/studentBatch/StudentCurrentBatch';
 
 function App() {
   const [student , setStudent] = useState(false);
@@ -33,6 +35,8 @@ function App() {
           <Route path='/teacher' element={ login && profile === "teacher" ? <TeacherDashboard setLogin = {setLogin} />  : <Teacher setLogin={setLogin} />} />
           <Route path='/student/batches' element={login && profile === "student" ? <BatchesPage/> :<Student setLogin = {setLogin} setProfile={setProfile} />}/>
           <Route path='/student/purchase/:batchId' element={login && profile === "student" ? <BatchPurchase setLogin={setLogin} /> :<Student setLogin = {setLogin} setProfile={setProfile} />}/>
+          <Route path='/teacher/currentBatch/:batchId' element={login && profile === "teacher" ? <CurrentBatch/> : <Teacher setLogin={setLogin} />} />
+          <Route path='/student/currentBatch/:batchId/:teacherId' element = {login && profile === "student" ? <StudentCurrentBatch/> : <Student setLogin={setLogin} setProfile={setProfile} /> } />
         </Routes>
       </BrowserRouter>
 
