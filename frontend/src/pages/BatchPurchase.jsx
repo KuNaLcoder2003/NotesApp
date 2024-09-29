@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const BatchPurchase = ({setLogin}) => {
     const [batchDetails , setBatchDetails] = useState(null)
     const path = useLocation();
+    const navigate = useNavigate();
     useEffect(()=> {
         const id = path.pathname.split('/').at(-1);
         fetch('http://localhost:3000/api/v1/batch/' + id , {
@@ -38,7 +39,13 @@ const BatchPurchase = ({setLogin}) => {
                     }
                 }).then(async(data)=>{
                     const response = await data.json();
-                    console.log(response);
+                    if(!response.valid) {
+                        alert(response.message)
+                    }
+                    else {
+                        alert(response.message)
+                    }
+                    navigate(`/student`)
                 })
             }
             else {
