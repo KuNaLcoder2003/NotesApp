@@ -11,7 +11,7 @@ const authMiddleWare = (req,res,next)=>{
         const token = authToken.split(' ')[1]
         const verified = jwt.verify(token , jwt_key)
         if(verified) {
-            console.log('helo 2')
+            // console.log('helo 2')
             req.userId = verified.userId;
             // console.log(req.userId)
             next()
