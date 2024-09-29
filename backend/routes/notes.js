@@ -40,9 +40,9 @@ const upload = multer({ storage: storage })
 router.post('/create/:batchId', authMiddleWare, upload.single('file'), async (req, res) => {
     const teacherId = req.userId;
     const batchId = req.params.batchId;
-
+    
     try {
-
+        console.log('hello in try')
         const new_notes = new Notes({
             teacherId: teacherId,
             batch: batchId,
@@ -51,14 +51,18 @@ router.post('/create/:batchId', authMiddleWare, upload.single('file'), async (re
                 notes_id: req.file.fieldname
             }]
         })
+        // console.log('hello 2 in try')
         await new_notes.save();
+        // console.log('hello 3 in try')
         res.status(200).json({
+            uploaded : true,
             message: 'PDF file uploaded successfully!',
             // fileUrl: req.file.path,  // Cloudinary URL for the uploaded PDF
             // fileId: req.file.filename,  // Public ID of the file in Cloudinary
         });
-        console.log(new_notes)
+        // console.log(new_notes)
     } catch (error) {
+        console.log('hello 2 in catch')
         res.status(500).json({ message: 'Error uploading PDF file', error });
     }
 })
@@ -83,6 +87,27 @@ router.post('/addNotes/:batchId', authMiddleWare, upload.single('file'), async (
     } catch (error) {
         res.status(500).json({
             message : "something went wrong"
+        })
+    }
+})
+
+router.get('/teacher/:batchId' , authMiddleWare , async(req,res)=> {
+    const teacherId = req.userId;
+    const batchId = req.params.batchId;
+    try {
+        const notes = await Notes.find({batch : batchId , teacherId : teacherId }).populate('files')
+        if(notes.length === 0){
+            return res.status(404).json({
+                message : "No notes found"
+            })
+        }
+        const notes_array = notes.reduce((acc, note) => acc.concat(note.files), []);
+        res.status(200).json({
+            notes : notes_array
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : "Error fetching notes"
         })
     }
 })
