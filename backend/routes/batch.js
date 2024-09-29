@@ -12,12 +12,13 @@ const { default: mongoose } = require('mongoose');
 router.get('/:Id'  , async(req, res)=> {
     const batchId = req.params.Id
     try {
-        const batch = await Batch.findOne({_id : batchId}).populate('teacher');
+        const batch = await Batch.findOne({_id : batchId}).populate('teacher').populate('students');
         if(!batch) {
             return res.json({
                 messsage : "No course found with id : " + batchId
             })
         }
+        
         
         res.status(200).json({
             batch : batch
