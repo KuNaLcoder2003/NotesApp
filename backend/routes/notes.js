@@ -146,7 +146,7 @@ router.get('/student/:batchId/:teacherId' , authMiddleWare , async(req,res)=> {
         //     } )
         // })
         const notes_array = notes.reduce((acc, note) => acc.concat(note.files), []);
-        // console.log(notes_array);
+        // console.log(notes_array);s
         res.status(200).json({
             notes : notes_array
         })
