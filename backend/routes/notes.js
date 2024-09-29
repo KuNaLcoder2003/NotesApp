@@ -112,10 +112,10 @@ router.get('/teacher/:batchId' , authMiddleWare , async(req,res)=> {
     }
 })
 
-router.get('/student/:batchId' , authMiddleWare , async(req,res)=> {
+router.get('/student/:batchId/:teacherId' , authMiddleWare , async(req,res)=> {
     const studentId = req.userId;
-    const teacherId = req.body.teacherId;
-    if(!teacherId) {
+    const teacherId = req.params.teacherId;
+    if(teacherId == "") {
         return res.status(400).json({
             message : "Bad request"
         })
@@ -146,6 +146,7 @@ router.get('/student/:batchId' , authMiddleWare , async(req,res)=> {
         //     } )
         // })
         const notes_array = notes.reduce((acc, note) => acc.concat(note.files), []);
+        // console.log(notes_array);
         res.status(200).json({
             notes : notes_array
         })
