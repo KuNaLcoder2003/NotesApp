@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import "./teacherbatch.css"
 const TeacherBatches = ({url}) => {
+    const navigate = useNavigate();
     const [batches , setBatches] = useState([]);
     useEffect(()=> {
         const token = localStorage.getItem('token');
@@ -29,7 +30,7 @@ const TeacherBatches = ({url}) => {
         {
             batches.map( batch=> {
                 return (
-                    <div className='batch'>
+                    <div key={batch.id} className='batch' onClick={()=>navigate(`/teacher/currentBatch/${batch.id}`)} >
                         <h2>{batch.batch_name}</h2>
                         <p>{batch.batch_desc}</p>
                         <p>No of students : {batch.students.length}</p>
