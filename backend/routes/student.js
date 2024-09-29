@@ -126,8 +126,10 @@ router.get('/purchased' ,  authMiddleWare , async(req,res)=> {
                 message : "No purchased Batches"
             })
         }
+        console.log(student.batches)
         res.status(200).json({
-            batches : student.batches
+            batches : student.batches,
+            
         })
     } catch (error) {
         res.status(500).json({
