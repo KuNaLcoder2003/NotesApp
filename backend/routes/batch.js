@@ -18,10 +18,11 @@ router.get('/:Id'  , async(req, res)=> {
                 messsage : "No course found with id : " + batchId
             })
         }
-        
-        
+
+        // console.log(batch)
         res.status(200).json({
-            batch : batch
+            batch : batch,
+            teacherId : batch.teacher
         })
     } catch (error) {
         res.status(500).json({
