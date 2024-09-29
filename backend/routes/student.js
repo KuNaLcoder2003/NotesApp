@@ -105,9 +105,19 @@ router.post('/purchase/:batchId' , authMiddleWare , async(req,res)=> {
     const studentId = req.userId;
     const batchId = req.params.batchId;
     try {
+
+        // first see if student is already enrolled
+        const purchased = await Student.findOne({_id : studentId , batches : batchId});
+        if(purchased) {
+            return res.status(401).json({
+                valid : false,
+                message : "you are already enrolled in this course"
+            })
+        }        
         const student = await Student.findOneAndUpdate({_id : studentId} , {$push : {batches : batchId}})
         const batch = await Batch.findOneAndUpdate({_id : batchId} , {$push : {students : studentId}})
         res.status(200).json({
+            valid : true,
             message : "Added Successfully"
         })
     } catch (error) {
@@ -126,7 +136,7 @@ router.get('/purchased' ,  authMiddleWare , async(req,res)=> {
                 message : "No purchased Batches"
             })
         }
-        console.log(student.batches)
+        // console.log(student.batches)
         res.status(200).json({
             batches : student.batches,
             
