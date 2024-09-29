@@ -23,7 +23,7 @@ const Header = ({ name, letter, type , setLogin }) => {
                         <div>Teachers</div>
                     </div> :
                     <div className='student-access'>
-                        <div>Add a batch</div>
+                        <div onClick={()=>navigate('/teacher/addBatch')} >Add a batch</div>
                         <div>Students</div>
                     </div>
             }
