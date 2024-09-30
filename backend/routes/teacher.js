@@ -173,5 +173,23 @@ router.get('/details' , authMiddleWare , async(req,res) => {
     }
 })
 
+router.get('/' , async(req,res)=> {
+    try {
+        const teachers = await Teacher.find({}).populate('batches')
+        if(teachers.length == 0) {
+            return res.status(403).json({
+                message : "No teachers currently"
+            })
+        }
+        res.status(200).json({
+            teachers : teachers
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : "Error getting teachers"
+        })
+    }
+} )
+
 
 module.exports = router
