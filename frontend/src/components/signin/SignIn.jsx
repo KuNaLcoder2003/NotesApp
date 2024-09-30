@@ -25,11 +25,11 @@ const SignIn = ({ url, setLogin, type }) => {
         }
       }).then(async (data) => {
         const response = await data.json();
-        console.log(response);
+        // console.log(response);
         if (response.token) {
           localStorage.setItem('token', `Bearer ${response.token}`)
-          type === "student" ? localStorage.setItem('profile' , "student") : localStorage.setItem('profile' , "teacher") 
           setLogin(true);
+          type === "student" ? localStorage.setItem('profile' , "student") : localStorage.setItem('profile' , "teacher") 
           // setId(response.id)
           // type === "student" ? navigate(`/student/${response.id}`) : navigate('/teacher')
         }
