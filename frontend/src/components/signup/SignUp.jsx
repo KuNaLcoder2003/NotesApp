@@ -35,7 +35,8 @@ const SignUp = ({ url, setLogin, setId , type }) => {
         // console.log(response);
         if (response.token) {
           localStorage.setItem('token', `Bearer ${response.token}`)
-          type === "student" ? localStorage.setItem('profile' , 'student') : localStorage.setItem('profile' , 'teacher')
+          type === "student" ? localStorage.setItem('profile' , 'student')   : localStorage.setItem('profile' , 'teacher')
+          navigate(`/${type}`)
           // setLogin(true);
           setId(response.id)
           // navigate(`/student/${response.id}`)
