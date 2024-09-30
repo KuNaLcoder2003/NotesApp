@@ -20,7 +20,7 @@ const Header = ({ name, letter, type , setLogin }) => {
                 type === "Student Profile" ?
                     <div className='student-access'>
                         <div onClick={()=>navigate('/student/batches')}>Batches</div>
-                        <div>Teachers</div>
+                        <div onClick={()=>navigate('/teacherList')}>Teachers</div>
                     </div> :
                     <div className='student-access'>
                         <div onClick={()=>navigate('/teacher/addBatch')} >Add a batch</div>
