@@ -23,7 +23,6 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       setLogin(true); // Set login state to true if token exists
-     
     }
   }, []);
 
