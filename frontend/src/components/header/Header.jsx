@@ -29,7 +29,7 @@ const Header = ({ name, letter, type , setLogin }) => {
             }
 
             <div className='user-details'>
-                <button>Account</button>
+                <button onClick={()=> {type === "Student Profile" ? navigate('/student/account') : navigate('/teacher/account')}}>Account</button>
                 <button onClick={logoutHandler}>Logout</button>
             </div>
         </div>
