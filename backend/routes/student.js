@@ -178,18 +178,26 @@ router.get('/content/:batchId' , authMiddleWare , async(req,res)=> {
 router.get('/detail' ,authMiddleWare , async(req,res)=>{
     const studentId = req.userId;
     try {
-        const student = await Student.findOne({_id : studentId})
+        const student = await Student.findOne({_id : studentId}).populate('batches')
         if(!student){
             return res.status(400).json({
+                valid : false,
                 message : 'Error getting detials'
             })
         }
         res.status(200).json({
+            valid : true,
             student_name : `${student.first_name} ${student.last_name}`,
-            username : student.username
+            username : student.username,
+            password : student.password,
+            batches : student.batches,
+            age : student.age
         })
     } catch (error) {
-        
+        res.status(500).json({
+            valid : false , 
+            message : "Something went wrong"
+        })
     }
 } )
 
