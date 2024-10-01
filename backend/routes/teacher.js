@@ -159,12 +159,17 @@ router.get('/details' , authMiddleWare , async(req,res) => {
         const teacher = await Teacher.findOne({_id  : teacherId}).populate('batches')
         if(!teacher) {
             return res.status(401).json({
+                valid : false,
                 message : "teacher not found"
             })
         }
         res.status(200).json ({
             valid : true,
-            teacher : teacher
+            teacher : teacher,
+            teacher_name : `${teacher.first_name} ${teacher.last_name}`,
+            username : teacher.username,
+            password : teacher.password,
+            batches : teacher.batches,
         })
     } catch (error) {
         res.status(500).json({
