@@ -196,5 +196,24 @@ router.get('/' , async(req,res)=> {
     }
 } )
 
+router.put('/edit', authMiddleWare, async (req, res) => {
+    const teacherId = req.userId;
+    const edited = req.body
+    try {
+        const student = await Teacher.findOneAndUpdate({ _id: teacherId }, edited, { new: true, runValidators: true })
+        if (!student) {
+            return res.status(404).json({ message: "Student not found", valid: false });
+        }
+        res.status(200).json({
+            valid: true,
+            message: "Details updated"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : "Error updating teacher details"
+        })
+    }
+})
+
 
 module.exports = router
